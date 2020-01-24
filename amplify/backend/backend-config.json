@@ -1,1 +1,10 @@
-{}
+{
+	"auth": {
+		"photostore9d4139ef": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
+}
