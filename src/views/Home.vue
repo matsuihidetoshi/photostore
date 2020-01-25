@@ -3,10 +3,26 @@
     <img alt="Vue logo" src="../assets/logo.png">
     <label for="file">
       Upload
-      <input type="file" @change="upload" id="file" style="display:none;">
+      <input type="file" @change="upload" id="file" style="display:none;" accept="image/*" capture="environment">
     </label>
     <p>Status: {{ message }}</p>
-    <p>Result: {{ result }}</p>
+    <table>
+        <thead>
+          <tr>
+            <th>Entities</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(label, index) in result" v-bind:key="label.id">
+            <td>{{ index }} : {{ label.Name }} : {{ label.Confidence }}</td>
+            <td v-if="label.Instances">
+              <tr v-for="(instance, index) in label.Instances" v-bind:key="instance.id">
+                <td>Instance{{ index }}: {{ instance.Confidence }}</td>
+              </tr>
+            </td>
+          </tr>
+        </tbody>
+    </table>
   </div>
 </template>
 
@@ -39,7 +55,7 @@ export default {
       instance.post('/default/photoAnalize',{
         filename: this.filename
       },).then(response => {
-        this.result = response.data
+        this.result = response.data.body.Labels
       }).catch(error => {
         this.result = error
       }).finally()
